@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kino XII</title>
+  <meta name="description" content="Film details and showtimes at Kino XII.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://api.kinoxii.redberryinternship.ge">
+  <link rel="preconnect" href="https://image.tmdb.org">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/movie.css">
+  <script type="module" src="js/movie.js"></script>
+</head>
+<body>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="movie-page" aria-busy="true">
+    <section class="film-hero" id="film-hero">
+      <div class="film-hero__backdrop"></div>
+      <div class="container film-hero__inner">
+        <div class="film-hero__poster skeleton"></div>
+        <div class="film-hero__info">
+          <span class="skeleton skeleton--text" style="width: 120px"></span>
+          <span class="skeleton skeleton--title"></span>
+          <span class="skeleton skeleton--text" style="width: 560px"></span>
+          <span class="skeleton skeleton--text" style="width: 420px"></span>
+        </div>
+      </div>
+    </section>
+
+    <div class="container film-body">
+      <section class="film-sessions" id="film-sessions" aria-labelledby="film-sessions-title">
+        <span class="skeleton skeleton--text" style="width: 160px"></span>
+        <div class="skeleton skeleton--days"></div>
+        <div class="skeleton skeleton--hall"></div>
+      </section>
+      <aside class="film-details" id="film-details" aria-labelledby="film-details-title">
+        <span class="skeleton skeleton--text" style="width: 120px"></span>
+        <div class="skeleton skeleton--details"></div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+</body>
+</html>

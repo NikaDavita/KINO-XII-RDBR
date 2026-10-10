@@ -23,6 +23,12 @@ export function formatDayMonth(isoDate, month = 'long') {
   return new Date(y, m - 1, d).toLocaleDateString('en-GB', { day: 'numeric', month });
 }
 
+// "2026-09-04" -> "4 September 2026"
+export function formatFullDate(isoDate) {
+  const [y, m, d] = isoDate.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
 export const movieUrl = (slug) => `movie.html?slug=${encodeURIComponent(slug)}`;
 
 // Every "click a showtime" goes through here. Booking is a modal on the film page,

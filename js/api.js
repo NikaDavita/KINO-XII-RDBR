@@ -88,6 +88,10 @@ export const api = {
       },
     }),
   search: (q) => request('/search', { query: { q } }).then((r) => r.data),
+  movie: (slug) => request(`/movies/${encodeURIComponent(slug)}`).then((r) => r.data),
+  // [{ venue, sessions }] for one date
+  movieSessions: (slug, date) =>
+    request(`/movies/${encodeURIComponent(slug)}/sessions`, { query: { date } }).then((r) => r.data),
   notify: (slug) =>
     request(`/movies/${encodeURIComponent(slug)}/notify`, { method: 'POST' }).then((r) => r.data),
 

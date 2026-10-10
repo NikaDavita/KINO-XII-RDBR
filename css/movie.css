@@ -1,0 +1,479 @@
+/* ==========================================================================
+   Film details page (Figma: assets/MovieDetails)
+   ========================================================================== */
+
+/* ---------- Hero: backdrop, poster, title ---------- */
+
+.film-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-elevated);
+}
+
+.film-hero__backdrop {
+  position: absolute;
+  inset: 0;
+}
+
+.film-hero__backdrop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  animation: backdrop-in 1.2s var(--ease) both;
+}
+
+@keyframes backdrop-in {
+  from { opacity: 0; transform: scale(1.04); }
+}
+
+.film-hero__backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(7, 12, 28, 0.85) 0%, rgba(7, 12, 28, 0.55) 45%, rgba(7, 12, 28, 0.15) 100%),
+    linear-gradient(180deg, rgba(7, 12, 28, 0.6) 0%, rgba(7, 12, 28, 0) 25%),
+    linear-gradient(0deg, var(--bg) 0%, rgba(7, 12, 28, 0) 30%);
+}
+
+.film-hero__inner {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 38px; /* Figma 34 */
+  min-height: 596px; /* Figma 567 */
+  padding-top: calc(var(--header-h) + 46px);
+  padding-bottom: 40px;
+}
+
+.film-hero__poster {
+  flex-shrink: 0;
+  width: 321px; /* Figma 289x374 */
+  height: 393px;
+  border-radius: 13px;
+  object-fit: cover;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  animation: rise-in 0.7s var(--ease) both;
+}
+
+.film-hero__info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 680px;
+  padding-bottom: 10px;
+  animation: rise-in 0.7s 0.1s var(--ease) both;
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(16px); }
+}
+
+/* Tint/red label, same as the home hero */
+.hero-label {
+  display: inline-flex;
+  align-items: center;
+  height: 20px; /* Figma 18 */
+  margin-bottom: 21px;
+  padding: 0 9px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 13px; /* Figma 12 */
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.film-hero__title {
+  margin-bottom: 21px;
+  font-size: 43px; /* Figma 40 */
+  font-weight: 800;
+  line-height: 1.05;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.film-hero__synopsis {
+  max-width: 608px; /* Figma 547 */
+  margin-bottom: 20px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 15px; /* Figma 14 */
+  line-height: 19px;
+}
+
+.film-hero__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 11px;
+}
+
+/* ---------- Body: sessions + details ---------- */
+
+.film-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 458px;
+  gap: 40px;
+  align-items: start;
+  padding-top: 38px;
+  padding-bottom: 60px;
+}
+
+.film-sessions__head {
+  margin-bottom: 21px;
+}
+
+.film-sessions__title,
+.film-details__title {
+  font-size: 22px; /* Figma 20 */
+  font-weight: 800;
+  line-height: 29px;
+  margin-bottom: 14px;
+}
+
+.film-sessions__subtitle {
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* 7-day picker, larger than the sidebar one on the sessions page */
+.day-picker {
+  display: flex;
+  gap: 9px;
+  margin-bottom: 27px;
+}
+
+.day-picker__day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 86px;
+  height: 83px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--surface);
+  font-size: 14px; /* Figma 13 */
+  font-weight: 600;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.day-picker__day strong {
+  font-size: 19px; /* Figma 18 */
+  font-weight: 800;
+}
+
+.day-picker__day:hover {
+  background: var(--surface-2);
+}
+
+/* Days with no sessions (from availableDates) stay clickable but read as empty */
+.day-picker__day.is-empty {
+  color: var(--text-dim);
+}
+
+.day-picker__day.is-selected {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* "This film is rated 18+. You cannot buy tickets for it with this account." */
+.age-gate {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  padding: 14px 18px;
+  border: 1px solid rgba(236, 48, 19, 0.35);
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.age-gate .icon {
+  font-size: 18px;
+}
+
+.film-sessions__empty,
+.film-missing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 56px 0;
+  text-align: center;
+}
+
+.film-missing {
+  padding-top: calc(var(--header-h) + 120px);
+  padding-bottom: 160px;
+}
+
+/* ---------- Loading placeholders ---------- */
+
+.film-hero__info .skeleton,
+.film-sessions > .skeleton,
+.film-details > .skeleton,
+.venue-block__title.skeleton {
+  display: block;
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.skeleton--days {
+  width: 740px;
+  height: 92px;
+}
+
+.skeleton--hall {
+  width: 560px;
+  height: 160px;
+}
+
+.skeleton--details {
+  height: 420px;
+}
+
+.venue-block__title.skeleton {
+  width: 180px;
+}
+
+/* ---------- Venue -> hall -> showtimes ---------- */
+
+.venue-block + .venue-block {
+  margin-top: 29px;
+}
+
+.venue-block__title {
+  margin-bottom: 16px;
+  font-size: 16px; /* Figma 15 */
+  font-weight: 800;
+  line-height: 21px;
+}
+
+.venue-block__halls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px; /* Figma 16 */
+}
+
+.hall {
+  padding: 14px 18px 22px;
+  border-radius: 20px;
+  background: var(--surface);
+}
+
+.hall__title {
+  font-size: 14px; /* Figma 13 */
+  font-weight: 600;
+  line-height: 18px;
+  margin: 0 0 7px;
+}
+
+.hall__showtimes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px; /* Figma 13 */
+}
+
+/* ---------- Showtime ticket (Figma: MovieDetails / Selected) ---------- */
+/* Notches are cut with a mask at the tear line; the dashed line sits on the same spot. */
+
+.showtime {
+  --tear: 62%;
+  --notch: 6px;
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--tear) 1fr;
+  width: 227px;
+  height: 77px;
+  border-radius: 12px;
+  background: var(--bg);
+  -webkit-mask:
+    radial-gradient(circle var(--notch) at var(--tear) 0, transparent 98%, #000) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--notch) at var(--tear) 100%, transparent 98%, #000) bottom / 100% 51% no-repeat;
+  mask:
+    radial-gradient(circle var(--notch) at var(--tear) 0, transparent 98%, #000) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--notch) at var(--tear) 100%, transparent 98%, #000) bottom / 100% 51% no-repeat;
+  transition: background-color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.showtime::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: var(--tear);
+  border-left: 2px dashed rgba(255, 255, 255, 0.85);
+  transform: translateX(-1px);
+}
+
+a.showtime:hover {
+  background: #111830;
+  transform: translateY(-2px);
+}
+
+/* The mask clips outlines, so focus is drawn inside the ticket */
+a.showtime:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.showtime.is-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.showtime__main,
+.showtime__side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.showtime__time {
+  font-size: 22px; /* Figma 20 */
+  font-weight: 800;
+}
+
+.showtime__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.showtime__lang {
+  color: var(--text-muted);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.showtime__format {
+  padding: 0 9px;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 13px; /* Figma 12 */
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+}
+
+.showtime__price {
+  color: var(--accent);
+  font-size: 17px; /* Figma 16 */
+  font-weight: 800;
+}
+
+.showtime__seats {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.showtime__seats .icon {
+  font-size: 14px;
+}
+
+.showtime__seats.is-low {
+  color: var(--accent);
+}
+
+/* ---------- Coming soon ---------- */
+
+.film-soon {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  border-radius: 20px;
+  background: var(--surface);
+}
+
+.film-soon .search-state__icon {
+  flex-shrink: 0;
+  margin: 0;
+  background: var(--surface-2);
+}
+
+.film-soon__title {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.film-soon__text {
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.film-soon .notify-btn {
+  margin-left: auto;
+}
+
+/* ---------- Details sidebar ---------- */
+
+.film-details__title {
+  margin-bottom: 20px;
+}
+
+.film-details__list {
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+  margin: 0 0 20px;
+}
+
+.film-details__item dt {
+  margin-bottom: 4px;
+  color: var(--text-muted);
+  font-size: 13px; /* Figma 12 */
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 16px;
+}
+
+.film-details__item dd {
+  margin: 0;
+  font-size: 15px; /* Figma 14 */
+  font-weight: 600;
+  line-height: 16px;
+}
+
+.rating-note {
+  padding: 10px 14px 12px;
+  border-radius: 12px;
+  background: var(--warning-soft);
+  color: var(--warning);
+  max-width: 433px;
+}
+
+.rating-note__title {
+  margin-bottom: 7px;
+  font-size: 13px; /* Figma 12 */
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.rating-note__body {
+  display: flex;
+  gap: 10px;
+  font-size: 13px; /* Figma 12 */
+  line-height: 16px;
+}
+
+.rating-note__body strong {
+  flex-shrink: 0;
+  font-weight: 800;
+}
