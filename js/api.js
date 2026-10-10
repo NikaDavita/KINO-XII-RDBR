@@ -87,6 +87,17 @@ export const api = {
         'venues[]': venues, 'formats[]': formats, 'languages[]': languages, 'bands[]': bands,
       },
     }),
+  session: (id) => request(`/sessions/${id}`).then((r) => r.data),
+  // The hall map: sections -> rows -> seats. Sending a token also marks your own held seats (isMine).
+  seats: (sessionId) => request(`/sessions/${sessionId}/seats`).then((r) => r.data),
+
+  // Booking is three calls: seats, then holds, then orders.
+  holdSeats: (sessionId, seats) =>
+    request(`/sessions/${sessionId}/holds`, { method: 'POST', body: { seats } }).then((r) => r.data),
+  getHold: (holdId) => request(`/holds/${holdId}`).then((r) => r.data),
+  releaseHold: (holdId) => request(`/holds/${holdId}`, { method: 'DELETE' }),
+  createOrder: (body) => request('/orders', { method: 'POST', body }).then((r) => r.data),
+
   search: (q) => request('/search', { query: { q } }).then((r) => r.data),
   movie: (slug) => request(`/movies/${encodeURIComponent(slug)}`).then((r) => r.data),
   // [{ venue, sessions }] for one date

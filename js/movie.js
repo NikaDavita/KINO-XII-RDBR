@@ -1,6 +1,7 @@
 import { api } from './api.js';
 import { getUser, initAuth, withAuth } from './auth.js';
 import { initHeader } from './header.js';
+import { openBooking } from './booking.js';
 import { addRecent } from './recent.js';
 import { icons } from './icons.js';
 import {
@@ -106,6 +107,14 @@ function renderSessionsShell() {
     </div>
     <div class="age-gate" id="age-gate" role="alert" hidden></div>
     <div class="film-sessions__list" id="film-sessions-list" aria-live="polite"></div>`;
+
+  // A showtime is a real link (so it can be opened in a new tab), but a plain click opens the modal here.
+  $('#film-sessions-list').addEventListener('click', (e) => {
+    const link = e.target.closest('a[data-session]');
+    if (!link || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    startBooking(link.dataset.session);
+  });
 
   $('.day-picker').addEventListener('click', (e) => {
     const day = e.target.closest('[data-date]');
@@ -221,6 +230,26 @@ function renderShowtimes(groups) {
   }).join('');
 }
 
+/* ---------- Booking modal ---------- */
+
+// ?session=ID in the URL opens the modal, so links from the sessions page and refreshes land in it.
+async function startBooking(sessionId) {
+  const params = new URLSearchParams(window.location.search);
+  params.set('session', sessionId);
+  history.replaceState(null, '', `?${params}`);
+
+  const order = await openBooking(sessionId);
+
+  const after = new URLSearchParams(window.location.search);
+  after.delete('session');
+  history.replaceState(null, '', `?${after}`);
+  // Seats may have been held, released or sold meanwhile: refresh the counts on screen.
+  sessionsByDate.clear();
+  loadedDates.clear();
+  selectDate(selectedDate);
+  return order;
+}
+
 /* ---------- Coming soon: no sessions, offer Notify me ---------- */
 
 function renderComingSoon() {
@@ -320,6 +349,9 @@ async function boot() {
     const days = nextDays().map((d) => d.iso);
     const requested = new URLSearchParams(window.location.search).get('date');
     selectDate(days.includes(requested) ? requested : days[0]);
+  
+    const sessionId = new URLSearchParams(window.location.search).get('session');
+    if (sessionId) startBooking(sessionId);
   }
 
   // Logging in or out changes the age gate (and Notify state), so redraw what depends on it.
