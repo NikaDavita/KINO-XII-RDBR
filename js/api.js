@@ -98,6 +98,12 @@ export const api = {
   releaseHold: (holdId) => request(`/holds/${holdId}`, { method: 'DELETE' }),
   createOrder: (body) => request('/orders', { method: 'POST', body }).then((r) => r.data),
 
+  // Sent as JSON: this page has no avatar to upload, and JSON avoids PHP's unparsed PUT multipart bodies.
+  updateProfile: (fields) => request('/profile', { method: 'PUT', body: fields }).then((r) => r.data),
+  tickets: (filter) => request('/tickets', { query: { filter } }).then((r) => r.data),
+  refund: (reference) =>
+    request(`/orders/${encodeURIComponent(reference)}/refund`, { method: 'POST' }).then((r) => r.data),
+
   search: (q) => request('/search', { query: { q } }).then((r) => r.data),
   movie: (slug) => request(`/movies/${encodeURIComponent(slug)}`).then((r) => r.data),
   // [{ venue, sessions }] for one date

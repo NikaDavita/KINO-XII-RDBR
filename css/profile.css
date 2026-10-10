@@ -1,0 +1,428 @@
+/* ==========================================================================
+   My Profile (Figma: assets/MyProfile)
+   ========================================================================== */
+
+.profile-page {
+  padding: calc(var(--header-h) + 32px) 0 40px;
+}
+
+.page-head__title {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+/* ---------- Main tabs: Personal Information / My Tickets ---------- */
+
+.profile-tabs {
+  display: flex;
+  gap: 36px;
+  margin: 24px 0 36px;
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-tabs__tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 2px 16px;
+  border: 0;
+  background: none;
+  color: var(--text-muted);
+  font-size: 16px;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.profile-tabs__tab:hover,
+.profile-tabs__tab.is-active {
+  color: #fff;
+}
+
+.profile-tabs__tab.is-active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+.count-badge {
+  display: grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.profile-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px 0 120px;
+  text-align: center;
+}
+
+/* ---------- Personal information ---------- */
+
+.profile-status-bar {
+  max-width: 820px;
+  margin-bottom: 28px;
+}
+
+.profile-status-bar__incomplete,
+.profile-status-bar__complete {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.profile-status-bar__incomplete {
+  border: 1px solid rgba(226, 126, 4, 0.35);
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+
+.profile-status-bar__complete {
+  display: inline-flex;
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.profile-status-bar .icon {
+  font-size: 18px;
+}
+
+.profile-skeleton {
+  max-width: 820px;
+  height: 560px;
+  border-radius: 16px;
+}
+
+.ticket-list[aria-busy='true'] {
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-width: 820px;
+}
+
+.field__hint {
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* Email: shown, but it cannot be edited */
+.field--readonly .field__input {
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.field--readonly .field__input:hover,
+.field--readonly .field__input:focus {
+  border-color: transparent;
+  background: var(--surface);
+}
+
+/* Native date picker, themed dark with the Figma calendar icon */
+.field__input--date {
+  color-scheme: dark;
+}
+
+.field__input--date::-webkit-calendar-picker-indicator {
+  margin-right: 24px;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.select-control select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.select-control option {
+  background: var(--surface);
+}
+
+.select-control__chevron {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  display: grid;
+  font-size: 16px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.eligibility {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.eligibility:empty {
+  display: none;
+}
+
+.eligibility.is-ok {
+  color: var(--success);
+}
+
+.eligibility.is-blocked {
+  color: var(--warning);
+}
+
+.profile-form__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.profile-form__dirty {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* ---------- My Tickets ---------- */
+
+.ticket-tabs {
+  display: inline-flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  padding: 5px;
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.ticket-tabs__tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 9px;
+  background: none;
+  color: var(--text-muted);
+  font-size: 15px;
+  font-weight: 600;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.ticket-tabs__tab:hover {
+  color: #fff;
+}
+
+.ticket-tabs__tab.is-active {
+  background: var(--surface-2);
+  color: #fff;
+}
+
+.ticket-tabs__count {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.ticket-tabs__tab.is-active .ticket-tabs__count {
+  color: #fff;
+}
+
+.ticket-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ticket-card {
+  display: grid;
+  grid-template-columns: 94px minmax(0, 1fr) 260px;
+  gap: 18px 24px;
+  align-items: center;
+  padding: 22px 26px;
+  border-radius: 24px;
+  background: var(--surface);
+  animation: menu-in 0.25s var(--ease);
+}
+
+.ticket-card.skeleton {
+  height: 170px;
+}
+
+.ticket-card.is-refunded {
+  opacity: 0.75;
+}
+
+.ticket-card__poster img,
+.ticket-card__poster .img-fallback {
+  display: block;
+  width: 94px;
+  height: 126px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.ticket-card__title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-size: 20px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.ticket-card__title a:hover {
+  color: var(--accent-hover);
+}
+
+.ticket-card__runtime {
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: none;
+}
+
+.ticket-card__facts {
+  display: flex;
+  gap: 40px;
+  margin: 0 0 12px;
+}
+
+.ticket-card__facts dt,
+.ticket-card__label {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ticket-card__facts dd {
+  margin: 2px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.ticket-card__seats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.ticket-card__seats .ticket-card__label {
+  margin-right: 4px;
+}
+
+.seat-chip {
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Right part, torn off with a dashed line like the design */
+.ticket-card__side {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding-left: 24px;
+  border-left: 1.5px dashed var(--border-strong);
+}
+
+.ticket-card__ref {
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.ticket-card__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.ticket-card__total strong {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+/* The card is already the dark "surface" colour, so the button steps up one shade */
+.ticket-card__side .btn--transparent {
+  background: var(--surface-2);
+}
+
+.ticket-card__side .btn--transparent:hover:not(:disabled) {
+  background: var(--text-dim);
+}
+
+.ticket-card__side .btn:disabled {
+  color: var(--text-dim);
+  cursor: not-allowed;
+}
+
+.ticket-card__note {
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+.ticket-card__refunded {
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.tickets-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 64px 0;
+  text-align: center;
+}
+
+/* ---------- Refund confirmation ---------- */
+
+.confirm-dialog__text {
+  margin-top: 12px;
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.confirm-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}

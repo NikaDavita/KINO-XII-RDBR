@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile · Kino XII</title>
+  <meta name="description" content="Your Kino XII profile and tickets.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://api.kinoxii.redberryinternship.ge">
+  <link rel="preconnect" href="https://image.tmdb.org">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/profile.css">
+  <script type="module" src="js/profile.js"></script>
+</head>
+<body>
+  <header class="site-header" id="site-header"></header>
+
+  <main class="profile-page">
+    <div class="container">
+      <h1 class="page-head__title">My Profile</h1>
+
+      <div class="profile-tabs" role="tablist" aria-label="Profile sections">
+        <button type="button" class="profile-tabs__tab" role="tab" id="tab-info" aria-controls="panel-info" data-tab="info">Personal Information</button>
+        <button type="button" class="profile-tabs__tab" role="tab" id="tab-tickets" aria-controls="panel-tickets" data-tab="tickets">
+          My Tickets <span class="count-badge" id="upcoming-badge" hidden></span>
+        </button>
+      </div>
+
+      <section class="profile-panel" id="panel-info" role="tabpanel" aria-labelledby="tab-info" hidden></section>
+      <section class="profile-panel" id="panel-tickets" role="tabpanel" aria-labelledby="tab-tickets" hidden></section>
+      <div class="profile-gate" id="profile-gate" hidden></div>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+</body>
+</html>
