@@ -1,0 +1,526 @@
+/* ==========================================================================
+   Home page
+   At 1920x1080 the hero fills the top, and the first row below it
+   (Recently viewed or Now Playing) peeks in above the fold.
+   ========================================================================== */
+
+.page-home {
+  --gutter: 78px; /* Figma 70 */
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  height: 800px; /* Figma 760 */
+  overflow: hidden;
+  background: var(--bg-elevated);
+}
+
+.hero__slides,
+.hero__slide,
+.hero__bg {
+  position: absolute;
+  inset: 0;
+}
+
+.hero__bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+}
+
+.hero__slide {
+  opacity: 0;
+  transition: opacity 1.1s var(--ease);
+}
+
+.hero__slide.is-active {
+  opacity: 1;
+}
+
+/* Slow push-in on the active backdrop */
+.hero__slide.is-active .hero__bg {
+  animation: ken-burns calc(var(--slide-duration, 7000ms) + 1200ms) linear both;
+}
+
+@keyframes ken-burns {
+  from { transform: scale(1.08); }
+  to { transform: scale(1); }
+}
+
+.hero__shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(10, 13, 28, 0.88) 0%, rgba(10, 13, 28, 0.55) 38%, rgba(10, 13, 28, 0) 70%),
+    linear-gradient(180deg, rgba(10, 13, 28, 0.7) 0%, rgba(10, 13, 28, 0) 22%),
+    linear-gradient(0deg, var(--bg) 0%, rgba(10, 13, 28, 0) 32%);
+  pointer-events: none;
+}
+
+.hero__inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  padding-top: var(--header-h);
+  padding-bottom: 41px;
+}
+
+.hero__content {
+  position: relative;
+  min-height: 300px;
+  margin-bottom: 89px; /* buttons to controls: Figma 111 to the bar centre */
+}
+
+.hero__placeholder {
+  position: absolute;
+  inset: auto 0 0 0;
+}
+
+.hero__item {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 640px;
+  pointer-events: none;
+}
+
+.hero__item.is-active {
+  pointer-events: auto;
+}
+
+/* Each line of copy slides in with a small stagger */
+.hero__item > * {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+}
+
+.hero__item.is-active > * {
+  opacity: 1;
+  transform: none;
+  transition-duration: 0.7s;
+}
+
+.hero__item.is-active > :nth-child(1) { transition-delay: 0.25s; }
+.hero__item.is-active > :nth-child(2) { transition-delay: 0.33s; }
+.hero__item.is-active > :nth-child(3) { transition-delay: 0.41s; }
+.hero__item.is-active > :nth-child(4) { transition-delay: 0.49s; }
+.hero__item.is-active > :nth-child(5) { transition-delay: 0.57s; }
+
+.hero__label {
+  display: inline-flex;
+  align-items: center;
+  height: 20px; /* Figma 18 */
+  margin-bottom: 18px;
+  padding: 0 9px;
+  border-radius: var(--radius-pill);
+  /* Figma tint/red: #EC3013 at 10% with #EC3013 text */
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 13px; /* Figma 12 */
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.hero__title {
+  margin-bottom: 20px;
+  font-size: 43px; /* Figma "Display" 40 */
+  font-weight: 800;
+  line-height: 1.05;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.hero__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 11px; /* Figma 10 */
+  margin-bottom: 19px;
+}
+
+.hero__synopsis {
+  display: -webkit-box;
+  max-width: 609px; /* Figma 548 */
+  margin-bottom: 21px;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 15px; /* Figma 14 */
+  line-height: 19px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.hero__actions {
+  display: flex;
+  gap: 12px;
+}
+
+.hero__controls {
+  display: flex;
+  align-items: center;
+  gap: 24px; /* Figma 22 */
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+
+.hero.is-ready .hero__controls {
+  opacity: 1;
+}
+
+.hero.is-single .hero__controls,
+.hero.is-empty .hero__controls {
+  display: none;
+}
+
+.hero__progress {
+  display: flex;
+  flex: 1;
+  gap: 8px;
+}
+
+/* Taller hit area than the visible 3px bar */
+.hero__bar {
+  flex: 1;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  background: none;
+  position: relative;
+}
+
+.hero__bar::before,
+.hero__bar-fill {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 3px;
+  margin-top: -1.5px;
+  border-radius: 2px;
+}
+
+.hero__bar::before {
+  background: rgba(255, 255, 255, 0.35);
+  transition: background-color 0.2s;
+}
+
+.hero__bar:hover::before {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.hero__bar-fill {
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.hero__bar.is-active .hero__bar-fill {
+  animation: hero-progress var(--slide-duration, 7000ms) linear forwards;
+}
+
+@keyframes hero-progress {
+  to { transform: scaleX(1); }
+}
+
+.hero__arrows {
+  display: flex;
+  gap: 13px; /* Figma 12 */
+}
+
+.hero__arrows .round-btn {
+  width: 55px; /* Figma 52 */
+  height: 55px;
+  font-size: 24px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Keep the slide timer, drop the decorative motion */
+  .hero__bar.is-active .hero__bar-fill {
+    animation-duration: var(--slide-duration, 7000ms) !important;
+  }
+
+  .hero__slide.is-active .hero__bg {
+    animation: none !important;
+  }
+}
+
+/* ---------- Sections ---------- */
+
+.section {
+  padding: 38px 0 41px; /* Figma: 39 to the title, 39 below the cards */
+}
+
+.section:not([hidden]) + .section {
+  background: linear-gradient(var(--border), var(--border)) top center / calc(100% - 2 * var(--gutter)) 1px no-repeat;
+}
+
+.section--recent {
+  padding-top: 41px; /* Figma 45 from the hero to the title */
+}
+
+.section__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 27px; /* Figma 31 from the title to the cards */
+}
+
+.section__title {
+  font-size: 26px; /* Figma 24 */
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.section__title--plain {
+  text-transform: none;
+}
+
+.section__link {
+  color: var(--accent-hover);
+  font-size: 14px;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.section__link:hover {
+  color: #fff;
+}
+
+/* ---------- Recently viewed card ---------- */
+
+.recent-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 364px;
+  height: 83px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.recent-card:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
+}
+
+.recent-card__thumb {
+  flex-shrink: 0;
+  width: 97px;
+  height: 69px;
+  border-radius: var(--radius);
+  object-fit: cover;
+}
+
+.recent-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.recent-card__title {
+  overflow: hidden;
+  font-size: 15px; /* Figma 14 */
+  font-weight: 800;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ---------- Now playing card ---------- */
+
+/* On hover the card widens, the poster turns landscape and the synopsis appears (Figma "Cards big / Hover") */
+.movie-card {
+  display: flex;
+  flex-direction: column;
+  width: 289px;
+  padding: 13px 13px 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  transition: width 0.4s var(--ease), border-color 0.25s var(--ease);
+}
+
+.movie-card:hover,
+.movie-card:focus-within {
+  width: 484px;
+  border-color: var(--border-strong);
+}
+
+.movie-card.skeleton {
+  height: 475px;
+}
+
+.movie-card__poster-link {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+.movie-card__poster {
+  width: 100%;
+  height: 316px; /* Figma 299 */
+  object-fit: cover;
+  object-position: center 20%;
+  transition: height 0.4s var(--ease);
+}
+
+.movie-card:hover .movie-card__poster,
+.movie-card:focus-within .movie-card__poster {
+  height: 239px;
+}
+
+.movie-card__synopsis {
+  display: -webkit-box;
+  max-height: 0;
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.3;
+  opacity: 0;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  transition: max-height 0.4s var(--ease), opacity 0.25s var(--ease);
+}
+
+.movie-card:hover .movie-card__synopsis,
+.movie-card:focus-within .movie-card__synopsis {
+  max-height: 60px;
+  margin-top: 4px;
+  opacity: 1;
+  transition-delay: 0s, 0.15s;
+}
+
+.movie-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
+  padding: 7px 0 0;
+}
+
+.movie-card__title {
+  overflow: hidden;
+  font-size: 19px; /* Figma 18 */
+  line-height: 25px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.movie-card__title a:hover {
+  color: var(--accent-hover);
+}
+
+.movie-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 9px;
+}
+
+.movie-card__price {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+/* ---------- Coming soon card ---------- */
+
+.soon-card {
+  display: flex;
+  gap: 18px;
+  width: 522px;
+  height: 168px;
+  padding: 10px 13px 12px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease);
+}
+
+.soon-card:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
+}
+
+.soon-card.skeleton {
+  height: 168px;
+}
+
+.soon-card__image-link {
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+.soon-card__image {
+  width: 254px;
+  height: 145px;
+  object-fit: cover;
+  object-position: center 20%;
+  transition: transform 0.5s var(--ease);
+}
+
+.soon-card:hover .soon-card__image {
+  transform: scale(1.04);
+}
+
+.soon-card__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+  padding: 2px 0 0;
+}
+
+.soon-card__date {
+  color: var(--accent-hover);
+  font-size: 13px; /* Figma 12 */
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.soon-card__title {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 15px; /* Figma 14 */
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.soon-card__title a:hover {
+  color: var(--accent-hover);
+}
+
+.notify-btn {
+  margin-top: auto;
+}
+
+/* Buy Ticket on the Now Playing card: Figma 119x35 */
+.movie-card__footer .btn {
+  height: 37px;
+  padding: 0 30px;
+  font-size: 14px;
+}
+
+/* Figma: 24 from the "Recently viewed" title to its cards (Now Playing has 31) */
+.section--recent .section__head {
+  margin-bottom: 19px;
+}

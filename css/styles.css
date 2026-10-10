@@ -1,0 +1,593 @@
+/* ==========================================================================
+   Kino XII: shared styles (tokens, base, buttons, header, footer, modal)
+   Designed for a 1920px desktop viewport. Mobile is out of scope.
+   ========================================================================== */
+
+:root {
+  /* Colours and type scale from the Figma "Colors" / "Typography" sheets */
+  --bg: #070c1c;
+  --bg-elevated: #0e1324;
+  --surface: #1e2031;
+  --surface-2: #2a2c3d;
+  --surface-hover: #24263a;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+
+  --text: #ffffff;
+  --text-muted: #a9a9a9;
+  --text-dim: #505261;
+
+  --accent: #ec3013;
+  --accent-hover: #ff4528;
+  --accent-soft: rgba(236, 48, 19, 0.1);
+  --success: #4ade80;
+  --success-soft: rgba(74, 222, 128, 0.1);
+  --warning: #e27e04;
+  --warning-soft: rgba(226, 126, 4, 0.1);
+
+  --font: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Sizes follow the Figma frames (1728x1027) scaled to 1920x1080:
+     horizontal x1.111, vertical x1.052, font sizes and square/round elements x1.07. */
+  --container: 1920px;
+  --gutter: 57px; /* inner pages: Figma 51 */
+  --gutter-header: 67px; /* Figma 60 */
+  --gutter-footer: 36px; /* Figma 32 */
+  --header-h: 117px; /* Figma 111 */
+
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 1280px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.3;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.has-modal {
+  overflow: hidden;
+}
+
+main {
+  flex: 1;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+/* ---------- Logo ---------- */
+
+.logo {
+  font-weight: 800;
+  font-size: 21px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+.logo--sm {
+  font-size: 15px;
+}
+
+/* ---------- Icons from Figma (see js/icons.js) ---------- */
+
+.icon-asset {
+  display: inline-block;
+  background: currentColor;
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
+}
+
+.icon--ticket { --icon: url("../assets/icons/ticket.png"); }
+.icon--timer { --icon: url("../assets/icons/timer.png"); }
+.icon--bell { --icon: url("../assets/icons/bell.png"); }
+.icon--check { --icon: url("../assets/icons/check.png"); }
+
+
+/* ---------- Buttons (Figma: Universal Components / Buttons) ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 45px; /* Figma 43 */
+  padding: 0 26px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-pill);
+  font-size: 15px; /* Figma 14 */
+  font-weight: 800;
+  white-space: nowrap;
+  transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease),
+    color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.btn:disabled {
+  cursor: default;
+}
+
+.btn .icon {
+  font-size: 18px;
+}
+
+/* Primary */
+.btn--primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+/* Disabled primary (Figma "Variant10"): grey until the form is valid */
+.btn--primary:disabled {
+  background: var(--text-dim);
+  color: var(--text-muted);
+}
+
+/* Secondary: white */
+.btn--light {
+  background: #fff;
+  color: var(--bg);
+}
+
+.btn--light:hover:not(:disabled) {
+  background: #e4e5ea;
+}
+
+/* Transparent: dark fill, light grey on hover */
+.btn--transparent {
+  background: var(--surface);
+  color: #fff;
+}
+
+.btn--transparent:hover:not(:disabled) {
+  background: var(--text-muted);
+}
+
+/* Notify Me: outline; "Reminder set" once subscribed */
+.btn--notify {
+  background: transparent;
+  border-color: var(--text-muted);
+  color: #fff;
+}
+
+.btn--notify:hover:not(:disabled) {
+  background: var(--surface-2);
+}
+
+.btn--notify.is-notified {
+  background: var(--surface-2);
+  border-color: transparent;
+}
+
+.btn--lg {
+  height: 52px;
+  font-size: 16px;
+}
+
+.btn--md {
+  height: 44px;
+  padding: 0 28px;
+}
+
+.btn--sm {
+  height: 42px; /* Figma 40 */
+  padding: 0 24px;
+}
+
+.btn--xs {
+  height: 32px; /* Figma 30 */
+  padding: 0 13px;
+  font-size: 13px;
+}
+
+.btn--xs .icon {
+  font-size: 15px;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+/* Slider arrows (Figma: Slider / Frame) */
+.round-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  font-size: 20px;
+  transition: background-color 0.2s var(--ease);
+}
+
+.round-btn:hover {
+  background: var(--bg);
+}
+
+/* ---------- Badges & tags (Figma: Universal Components / Badge) ---------- */
+
+/* "Badge_red": tint/red fill, red text */
+.age-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  height: 21px; /* Figma 20 */
+  padding: 0 9px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 13px; /* Figma 12 */
+  font-weight: 600;
+  cursor: help;
+}
+
+.age-badge--lg {
+  height: 25px; /* Figma 24 */
+  padding: 0 12px;
+}
+
+/* "Default" badge: dark fill, white text */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 25px; /* Figma 24 */
+  padding: 0 12px;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  font-size: 13px; /* Figma 12 */
+  font-weight: 600;
+}
+
+.tag .icon {
+  font-size: 14px;
+}
+
+/* ---------- Header ---------- */
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  height: var(--header-h);
+  transition: background-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+
+.site-header.is-scrolled {
+  background: rgba(10, 13, 28, 0.92);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 var(--border);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: 41px; /* Figma 37: logo to nav */
+  height: 100%;
+  /* Figma centres the header row at y 52 of 111, slightly above the middle */
+  padding: 0 var(--gutter-header) 7px;
+}
+
+.main-nav a {
+  font-size: 13px; /* Figma 12 */
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+
+.main-nav a:hover,
+.main-nav a[aria-current='page'] {
+  opacity: 1;
+}
+
+.header-auth {
+  display: flex;
+  align-items: center;
+  gap: 14px; /* Figma 13 */
+  min-width: 180px;
+  margin-left: -4px; /* search to buttons: Figma 33, the flex gap supplies the rest */
+  justify-content: flex-end;
+}
+
+/* ---------- Search (Figma: assets/Search) ---------- */
+
+.search {
+  position: relative;
+  margin-left: auto;
+  width: 422px;
+}
+
+.search__icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  display: grid;
+  transform: translateY(-50%);
+  font-size: 18px;
+  z-index: 1;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.search.has-value .search__icon {
+  color: #fff;
+}
+
+.search__input {
+  width: 100%;
+  height: 42px;
+  padding: 0 52px 0 48px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.search__input::placeholder {
+  color: var(--text-muted);
+}
+
+.search__input:hover {
+  border-color: var(--text-dim);
+}
+
+.search__input:focus {
+  border-color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* The design has its own clear button */
+.search__input::-webkit-search-cancel-button {
+  display: none;
+  -webkit-appearance: none;
+}
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  margin-top: 26px;
+}
+
+.site-footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 21px var(--gutter-footer) 36px;
+  /* A top rule that respects the gutters (a border would span the padding too). */
+  background: linear-gradient(var(--border), var(--border)) top center / calc(100% - 2 * var(--gutter-footer)) 1px no-repeat;
+}
+
+.site-footer p {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ---------- Horizontal card rows (shared by home and sessions) ---------- */
+
+.card-row {
+  display: flex;
+  gap: 22px; /* Figma 20 */
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  /* Room for hover lift and focus rings inside the scroller */
+  margin: -8px 0;
+  padding: 8px 0;
+  /* Fade the cut-off card on the right edge */
+  mask-image: linear-gradient(90deg, #000 calc(100% - 120px), transparent);
+  user-select: none;
+}
+
+.card-row::-webkit-scrollbar {
+  display: none;
+}
+
+.card-row.is-dragging {
+  scroll-snap-type: none;
+  cursor: grabbing;
+}
+
+.card-row.is-dragging a {
+  pointer-events: none;
+}
+
+.card-row > * {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+.card-meta {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 13px; /* Figma 12 */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.img-fallback {
+  background: linear-gradient(135deg, var(--surface-2), var(--surface));
+}
+
+.section-error,
+.section-empty {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 32px 0;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+/* ---------- Loading skeletons ---------- */
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  transform: translateX(-100%);
+  animation: shimmer 1.4s infinite;
+}
+
+.skeleton--text,
+.skeleton--title {
+  display: block;
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.skeleton--text {
+  height: 18px;
+}
+
+.skeleton--title {
+  width: 520px;
+  height: 64px;
+}
+
+@keyframes shimmer {
+  to { transform: translateX(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Log in / Sign up sizing (Figma): 448px wide, 37px side padding, 40px inputs */
+.modal__dialog.auth {
+  width: 448px;
+  padding: 32px 37px 34px;
+}
+
+.modal__dialog.auth--signup {
+  width: 528px;
+  padding: 31px 36px 34px;
+}
+
+.auth .field__label {
+  margin-bottom: 9px;
+  font-size: 14px; /* Figma 13 */
+  line-height: 16px;
+}
+
+.auth .field__input {
+  height: 41px; /* Figma 39 */
+  font-size: 14px;
+}
+
+.modal__dialog.auth {
+  border-radius: 28px; /* Figma 26 */
+}
+
+.auth .modal__close {
+  font-size: 22px;
+}
