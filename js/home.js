@@ -1,10 +1,11 @@
 import { api } from './api.js';
+import { initAuth, withAuth } from './auth.js';
 import { initHeader } from './header.js';
 import { addRecent, getRecent } from './recent.js';
 import { icons } from './icons.js';
 import {
   $, $$, escapeHtml, enableDragScroll, formatDayMonth, formatPrice, formatRuntime,
-  movieUrl, primaryGenre,
+  movieUrl, primaryGenre, showToast,
 } from './utils.js';
 
 const SLIDE_DURATION_MS = 7000;
@@ -13,6 +14,8 @@ const COMING_SOON_LIMIT = 8;
 
 // Every movie rendered on the page, by slug, so a click can be recorded in "Recently viewed".
 const moviesBySlug = new Map();
+// Slugs subscribed during this visit, so a re-render keeps the "Notified" state.
+const notifiedSlugs = new Set();
 
 const remember = (movies) => movies.forEach((m) => moviesBySlug.set(m.slug, m));
 
@@ -195,7 +198,7 @@ const notifyButtonContent = (notified) =>
 
 // Coming soon titles have no sessions, so the card opens the details page, never seat selection.
 const soonCard = (m) => {
-  const notified = m.isNotified;
+  const notified = m.isNotified || notifiedSlugs.has(m.slug);
   return `
   <article class="soon-card">
     <a class="soon-card__image-link" href="${movieUrl(m.slug)}" data-movie-link="${escapeHtml(m.slug)}" tabindex="-1">
@@ -216,6 +219,35 @@ const soonCard = (m) => {
   </article>`;
 };
 
+async function handleNotify(button) {
+  const slug = button.dataset.notify;
+  button.disabled = true;
+  try {
+    const result = await withAuth(() => api.notify(slug));
+    if (!result) {
+      button.disabled = false; // login modal was closed
+      return;
+    }
+    // Trust the server's answer rather than assuming the subscription worked.
+    if (!result.subscribed) {
+      button.disabled = false;
+      showToast("We couldn't set the reminder. Please try again.");
+      return;
+    }
+    notifiedSlugs.add(slug);
+    // The list may have re-rendered after login, so update whichever button is on the page now.
+    for (const btn of $$(`[data-notify="${CSS.escape(slug)}"]`)) {
+      btn.classList.add('is-notified');
+      btn.disabled = true;
+      btn.innerHTML = notifyButtonContent(true);
+    }
+    showToast("We'll let you know when it opens.", 'success');
+  } catch (err) {
+    button.disabled = false;
+    showToast(err.message);
+  }
+}
+
 /* ---------- Boot ---------- */
 
 function bindPageEvents() {
@@ -223,20 +255,33 @@ function bindPageEvents() {
     const link = e.target.closest('[data-movie-link]');
     if (link) addRecent(moviesBySlug.get(link.dataset.movieLink));
 
+    const notify = e.target.closest('[data-notify]');
+    if (notify) handleNotify(notify);
   });
 
   $$('.card-row').forEach(enableDragScroll);
+
+  // Coming soon carries per-user `isNotified`, so refetch it when the user signs in or out.
+  let firstAuthEvent = true;
+  window.addEventListener('auth:change', () => {
+    if (firstAuthEvent) { firstAuthEvent = false; return; }
+    notifiedSlugs.clear();
+    loadComingSoon();
+  });
 
   // Coming back with the browser's Back button should show the newly viewed title.
   window.addEventListener('pageshow', (e) => { if (e.persisted) renderRecent(); });
 }
 
-function boot() {
+async function boot() {
   bindPageEvents();
   initHeader();
   renderRecent();
   loadHero();
   loadNowPlaying();
+
+  // Wait for the session before Coming soon, so `isNotified` is accurate for this user.
+  await initAuth();
   loadComingSoon();
 }
 

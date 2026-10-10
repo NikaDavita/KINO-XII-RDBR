@@ -164,6 +164,11 @@ p {
 .icon--timer { --icon: url("../assets/icons/timer.png"); }
 .icon--bell { --icon: url("../assets/icons/bell.png"); }
 .icon--check { --icon: url("../assets/icons/check.png"); }
+.icon--arrow { --icon: url("../assets/icons/arrow.png"); }
+.icon--close { --icon: url("../assets/icons/close.png"); }
+.icon--error { --icon: url("../assets/icons/error.png"); }
+.icon--logout { --icon: url("../assets/icons/logout.png"); }
+.icon--user { --icon: url("../assets/icons/user.png"); }
 
 
 /* ---------- Buttons (Figma: Universal Components / Buttons) ---------- */
@@ -438,6 +443,204 @@ p {
   -webkit-appearance: none;
 }
 
+/* ---------- Avatar & user menu ---------- */
+
+.avatar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+.avatar--sm {
+  width: 42px; /* Figma 39 */
+  height: 42px;
+}
+
+.avatar--md {
+  width: 45px; /* Figma 42 */
+  height: 45px;
+}
+
+.avatar__initials {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.avatar__dot {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  width: 11px;
+  height: 11px;
+  border: 2px solid var(--bg);
+  border-radius: 50%;
+  background: var(--warning);
+}
+
+.avatar__dot--complete {
+  background: var(--success);
+}
+
+.user-menu {
+  position: relative;
+}
+
+.user-menu__trigger {
+  display: flex;
+  align-items: center;
+  gap: 18px; /* Figma 16: avatar to name */
+  padding: 4px;
+  border: 0;
+  background: none;
+}
+
+.user-menu__name {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.user-menu__chevron {
+  display: grid;
+  margin-left: 11px;
+  font-size: 18px;
+  color: var(--text-muted);
+  transition: transform 0.2s var(--ease);
+}
+
+.user-menu.is-open .user-menu__chevron {
+  transform: rotate(180deg);
+}
+
+.user-menu__panel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 337px; /* Figma 303 */
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-elevated);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+  animation: menu-in 0.18s var(--ease);
+}
+
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(-6px); }
+}
+
+.user-menu__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 14px;
+}
+
+.user-menu__identity {
+  min-width: 0;
+}
+
+.user-menu__fullname {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.user-menu__email {
+  overflow: hidden;
+  font-size: 14px;
+  color: var(--text-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  font-size: 13px;
+}
+
+.profile-status--complete {
+  background: var(--success-soft);
+  color: var(--success);
+  font-weight: 600;
+}
+
+.profile-status--incomplete {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 12px 14px;
+  border: 1px solid transparent;
+  background: var(--warning-soft);
+  transition: border-color 0.2s;
+}
+
+.profile-status--incomplete:hover {
+  border-color: rgba(226, 126, 4, 0.5);
+}
+
+.profile-status--incomplete strong {
+  color: var(--warning);
+  font-size: 15px; /* Figma 14 */
+  font-weight: 600;
+}
+
+.profile-status--incomplete span {
+  font-size: 13px; /* Figma 12 */
+  color: var(--text-muted);
+}
+
+.user-menu__links {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.user-menu__links a,
+.user-menu__logout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 2px; /* Figma rows 43 apart */
+  border-radius: var(--radius-sm);
+  font-size: 15px; /* Figma 14 */
+  font-weight: 600;
+  transition: background-color 0.15s;
+}
+
+.user-menu__links a:hover,
+.user-menu__logout:hover {
+  background: var(--surface);
+}
+
+.user-menu__links .icon,
+.user-menu__logout .icon {
+  font-size: 16px;
+}
+
+.user-menu__logout {
+  width: 100%;
+  margin: 4px 0 -12px; /* Figma: 30 from the Log out row to the panel edge */
+  border: 0;
+  background: none;
+  color: var(--accent-hover);
+  text-align: left;
+}
+
 /* ---------- Footer ---------- */
 
 .site-footer {
@@ -456,6 +659,268 @@ p {
 .site-footer p {
   font-size: 12px;
   color: var(--text-muted);
+}
+
+/* ---------- Modal ---------- */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  padding: 32px 0;
+}
+
+.modal__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 6, 14, 0.7);
+  backdrop-filter: blur(4px);
+  animation: fade-in 0.2s var(--ease);
+}
+
+.modal__dialog {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 460px;
+  padding: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  background: var(--bg);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+  animation: modal-in 0.25s var(--ease);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+}
+
+.modal__close {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  font-size: 20px;
+  transition: background-color 0.2s;
+}
+
+.modal__close:hover {
+  background: var(--surface);
+}
+
+/* ---------- Auth (Figma: assets/Authorization) ---------- */
+
+.auth--signup {
+  width: 528px;
+}
+
+.auth__head {
+  margin-bottom: 27px;
+}
+
+.auth__title {
+  font-size: 21px; /* Figma 20 */
+  font-weight: 800;
+  line-height: 27px;
+}
+
+.auth__subtitle {
+  margin-top: 5px;
+  color: var(--text-muted);
+  font-size: 13px; /* Figma 12 */
+}
+
+.auth__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 26px; /* Figma 28 from an input to the next label */
+}
+
+.auth__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px; /* Figma 12 */
+}
+
+.auth__form-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  color: var(--accent);
+  font-size: 14px;
+}
+
+.auth .btn--block {
+  margin-top: 35px;
+  height: 42px; /* Figma 40 */
+  font-size: 15px;
+}
+
+.auth__switch {
+  margin-top: 26px;
+  color: var(--text-muted);
+  font-size: 15px; /* Figma 14 */
+  text-align: center;
+  line-height: 20px;
+}
+
+.auth__switch-link {
+  padding: 0 0 0 4px;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.auth__switch-link:hover {
+  color: var(--accent-hover);
+}
+
+/* Avatar upload */
+.avatar-upload {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 33px;
+}
+
+.avatar-upload__picker {
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.avatar-upload__preview {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 15px;
+  transition: background-color 0.2s;
+}
+
+.avatar-upload__picker:hover .avatar-upload__preview {
+  background: var(--surface-2);
+}
+
+.avatar-upload__preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-upload__title {
+  font-size: 15px; /* Figma 14 */
+  font-weight: 800;
+}
+
+.avatar-upload__hint {
+  color: var(--text-muted);
+  font-size: 13px; /* Figma 12 */
+}
+
+/* ---------- Form fields (Figma: Universal Components / Input) ---------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.field__label {
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.field__control {
+  position: relative;
+}
+
+.field__input {
+  width: 100%;
+  height: 48px;
+  padding: 0 44px 0 16px;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  background: var(--surface);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+}
+
+.field__input::placeholder {
+  color: var(--text-muted);
+}
+
+.field__input:hover {
+  border-color: var(--text-dim);
+  background: var(--surface-2);
+}
+
+.field__input:focus {
+  border-color: var(--text-dim);
+  background: var(--surface);
+}
+
+.field__status {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  display: none;
+  font-size: 18px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.field__status--valid {
+  color: var(--success);
+}
+
+.field__status--invalid {
+  color: var(--accent);
+}
+
+.field.is-valid .field__status--valid,
+.field.is-invalid .field__status--invalid {
+  display: grid;
+}
+
+.field.is-invalid .field__label,
+.field.is-invalid .field__input {
+  color: var(--accent);
+}
+
+.field.is-invalid .field__input {
+  border-color: var(--accent);
+}
+
+.field__error {
+  margin-top: 6px;
+  color: var(--accent);
+  font-size: 12px;
+}
+
+.field__error:empty {
+  display: none;
 }
 
 /* ---------- Horizontal card rows (shared by home and sessions) ---------- */
@@ -513,6 +978,53 @@ p {
   padding: 32px 0;
   color: var(--text-muted);
   font-size: 15px;
+}
+
+/* ---------- Loading spinner (buttons) ---------- */
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- Toast ---------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  z-index: 120;
+  max-width: 480px;
+  padding: 14px 22px;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 16px);
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+.toast[data-type='error'] {
+  border-left: 3px solid var(--accent);
+}
+
+.toast[data-type='success'] {
+  border-left: 3px solid var(--success);
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
 
 /* ---------- Loading skeletons ---------- */

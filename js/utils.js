@@ -25,6 +25,15 @@ export function formatDayMonth(isoDate, month = 'long') {
 
 export const movieUrl = (slug) => `movie.html?slug=${encodeURIComponent(slug)}`;
 
+export function initials(name) {
+  return String(name ?? '')
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? '')
+    .join('');
+}
+
 // Lets mouse users drag horizontal card rows; a drag does not count as a click.
 // The window listeners are shared and added once, so rows can be re-rendered freely.
 let drag = null; // { track, startX, startScroll, moved }
@@ -70,4 +79,21 @@ export function enableDragScroll(track) {
   }, true);
 
   track.addEventListener('dragstart', (e) => e.preventDefault());
+}
+
+let toastTimer;
+export function showToast(message, type = 'error') {
+  let toast = $('#toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toast';
+    toast.className = 'toast';
+    toast.setAttribute('role', 'status');
+    document.body.append(toast);
+  }
+  toast.textContent = message;
+  toast.dataset.type = type;
+  toast.classList.add('is-visible');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('is-visible'), 4000);
 }
