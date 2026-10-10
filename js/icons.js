@@ -16,6 +16,7 @@ export const icons = {
   error: asset('error'),
   logout: asset('logout'),
   user: asset('user'),
+  calendar: asset('calendar'),
 
   search: svg('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'),
   upload: svg('<path d="M12 15V4"/><path d="m7 9 5-5 5 5"/><path d="M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/>'),

@@ -1,0 +1,533 @@
+/* ==========================================================================
+   Sessions page (Figma: assets/Sessions)
+   ========================================================================== */
+
+.sessions-page {
+  /* Figma: the "Sessions" title sits right under the header */
+  padding: calc(var(--header-h) + 5px) 0 60px;
+}
+
+.page-head {
+  margin-bottom: 31px;
+}
+
+.page-head__title {
+  font-size: 26px; /* Figma 24 */
+  font-weight: 800;
+}
+
+.page-head__subtitle {
+  margin-top: 5px;
+  color: var(--text-muted);
+  font-size: 15px; /* Figma 14 */
+}
+
+.sessions-layout {
+  display: grid;
+  grid-template-columns: 356px minmax(0, 1fr); /* Figma filter 320 */
+  gap: 58px; /* Figma 52 */
+  align-items: start;
+}
+
+/* ---------- Filters sidebar (sticky) ---------- */
+
+.filters {
+  --filters-h: 1053px; /* Figma 1001 */
+  position: sticky;
+  top: calc(var(--header-h) + 16px);
+  display: flex;
+  flex-direction: column;
+  height: var(--filters-h);
+  /* Never taller than the window, so it stays fully visible while stuck; the list then scrolls inside */
+  max-height: calc(100vh - var(--header-h) - 32px);
+  padding: 25px 0 0;
+  border-radius: 20px;
+  background: var(--surface);
+}
+
+.filters__title {
+  margin-bottom: 21px;
+  padding: 0 28px; /* Figma 25 */
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.filters__body {
+  flex: 1;
+  min-height: 0;
+  padding: 0 28px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-dim) transparent;
+}
+
+.filters__loading {
+  height: 600px;
+  border-radius: var(--radius);
+}
+
+/* Figma: rows 30 apart, 33 from the last row to the divider, 29 from the divider to the next label */
+.filter-group {
+  margin: 0;
+  padding: 0 0 19px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.filter-group + .filter-group {
+  padding-top: 26px;
+}
+
+/* Floated so the legend sits inside the group rather than on the fieldset border */
+.filter-group__title {
+  float: left;
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 0;
+  color: var(--text-muted);
+  font-size: 13px; /* Figma 12 */
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.filter-group__title + * {
+  clear: both;
+}
+
+.filters__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: auto 28px 0;
+  padding: 14px 0 22px;
+}
+
+.filters__count {
+  color: var(--text-muted);
+  font-size: 13px; /* Figma 12 */
+  line-height: 17px;
+  text-align: center;
+}
+
+/* ---------- Checkbox (Figma: Icons / Checkbox, Checkbox_checked) ---------- */
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Figma 11 */
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+.check__input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.check__box {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 18px; /* Figma 17 */
+  height: 18px;
+  border: 1.5px solid var(--text-dim);
+  border-radius: 5px;
+  color: transparent;
+  font-size: 13px;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.check:hover .check__box {
+  border-color: var(--text-muted);
+}
+
+.check__input:checked + .check__box {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.check__input:focus-visible + .check__box {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.check__label {
+  font-size: 16px; /* Figma 15 */
+  font-weight: 600;
+  line-height: 21px;
+}
+
+.check__detail {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* ---------- Date picker: next 7 days, one selected ---------- */
+
+.date-picker {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.date-picker__day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 55px; /* Figma 52 */
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: var(--surface-2);
+  font-size: 13px; /* Figma 12 */
+  font-weight: 600;
+  transition: background-color 0.15s;
+}
+
+.date-picker__day strong {
+  font-weight: 800;
+}
+
+.date-picker__day:hover {
+  background: var(--text-dim);
+}
+
+.date-picker__day.is-selected {
+  background: var(--accent);
+}
+
+/* ---------- Toolbar: count + sort ---------- */
+
+/* Page changes scroll here; keep the toolbar clear of the fixed header */
+.sessions {
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
+
+.sessions__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 21px;
+  margin-bottom: 24px; /* Figma 28 from the counter to the first poster */
+}
+
+.sessions__count {
+  font-size: 15px; /* Figma 14 */
+  font-weight: 600;
+}
+
+.sort {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sort__label {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.sort__trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  font-size: 15px; /* Figma 14 */
+  font-weight: 800;
+}
+
+.sort__trigger .icon {
+  font-size: 16px;
+  transition: transform 0.2s var(--ease);
+}
+
+.sort.is-open .sort__trigger .icon {
+  transform: rotate(180deg);
+}
+
+.sort__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 10;
+  min-width: 260px;
+  margin: 0;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+  list-style: none;
+  animation: menu-in 0.18s var(--ease);
+}
+
+.sort__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.sort__option:hover,
+.sort__option:focus-visible {
+  background: var(--surface);
+  outline: none;
+}
+
+.sort__option .icon {
+  color: var(--accent);
+}
+
+/* ---------- Movie groups ---------- */
+
+.sessions__list {
+  transition: opacity 0.2s var(--ease);
+}
+
+.sessions__list.is-loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Figma: each film block 1255x198, 32 to the divider on both sides */
+.movie-group {
+  padding-bottom: 34px;
+}
+
+.movie-group + .movie-group {
+  padding-top: 34px;
+  border-top: 1px solid var(--border);
+}
+
+.movie-group__head {
+  display: flex;
+  align-items: center;
+  gap: 18px; /* Figma 16 */
+  margin-bottom: 14px; /* Figma 13.5 */
+}
+
+.movie-group__poster {
+  display: block;
+  width: 63px; /* Figma 57x81 */
+  height: 85px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.movie-group__title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 21px; /* Figma 20 */
+  font-weight: 800;
+}
+
+.movie-group__title a:hover {
+  color: var(--accent-hover);
+}
+
+.movie-group__runtime {
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: 15px; /* Figma 14 */
+}
+
+/* Sessions sit in one horizontal row per film, like the design */
+.session-row {
+  gap: 15px; /* Figma 14 */
+}
+
+/* ---------- Session card (Figma: SessionsCards) ---------- */
+
+.session-card {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  width: 281px;
+  height: 111px;
+  padding: 16px 17px 12px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: var(--surface);
+  transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+a.session-card:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
+}
+
+.session-card.skeleton {
+  height: 111px;
+}
+
+.session-card.is-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.session-card__top,
+.session-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.session-card__top {
+  height: 24px;
+}
+
+.session-card__time {
+  font-size: 19px; /* Figma 18 */
+  font-weight: 800;
+}
+
+.session-card__format {
+  display: inline-flex;
+  align-items: center;
+  height: 23px; /* Figma 22 */
+  padding: 0 11px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  font-size: 13px; /* Figma 12 */
+  font-weight: 600;
+}
+
+.session-card__language {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.session-card__seats {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 5px;
+  color: var(--success);
+  font-size: 13px;
+}
+
+.session-card__seats .icon {
+  font-size: 14px;
+}
+
+.session-card__seats.is-low {
+  color: var(--accent);
+}
+
+.session-card__seats.is-sold-out {
+  color: var(--text-muted);
+}
+
+.session-card__hall {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.session-card__price {
+  flex-shrink: 0;
+  font-size: 17px; /* Figma 16 */
+  font-weight: 800;
+}
+
+.session-card__price small {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.sessions-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px 0;
+  text-align: center;
+}
+
+/* ---------- Pagination ---------- */
+
+.pagination {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination__arrow {
+  width: 43px;
+  height: 43px;
+  background: var(--surface);
+  font-size: 18px;
+  transform: rotate(90deg);
+}
+
+.pagination__arrow--next {
+  transform: rotate(-90deg);
+}
+
+.pagination__arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.pagination__arrow:disabled:hover {
+  background: var(--surface);
+}
+
+.pagination__page {
+  width: 43px; /* Figma 41 */
+  height: 43px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  font-size: 16px; /* Figma 15 */
+  font-weight: 600;
+  transition: background-color 0.15s;
+}
+
+.pagination__page:hover {
+  background: var(--surface);
+}
+
+.pagination__page.is-current {
+  background: var(--accent);
+}
+
+.pagination__gap {
+  width: 43px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.pagination__status {
+  position: absolute;
+  right: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}

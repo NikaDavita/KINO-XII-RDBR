@@ -279,6 +279,7 @@ async function boot() {
   renderRecent();
   loadHero();
   loadNowPlaying();
+  api.filterOptions().catch(() => {}); // warm the cache for the other pages
 
   // Wait for the session before Coming soon, so `isNotified` is accurate for this user.
   await initAuth();

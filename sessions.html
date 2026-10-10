@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sessions · Kino XII</title>
+  <meta name="description" content="Browse showtimes across all Kino XII venues.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://api.kinoxii.redberryinternship.ge">
+  <link rel="preconnect" href="https://image.tmdb.org">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/sessions.css">
+  <script type="module" src="js/sessions.js"></script>
+</head>
+<body>
+  <header class="site-header" id="site-header"></header>
+
+  <main class="sessions-page">
+    <div class="container">
+      <header class="page-head">
+        <h1 class="page-head__title">Sessions</h1>
+        <p class="page-head__subtitle">Browse showtimes across all venues</p>
+      </header>
+
+      <div class="sessions-layout">
+        <aside class="filters" id="filters" aria-label="Filters">
+          <h2 class="filters__title">Filters</h2>
+          <div class="filters__body" id="filters-body">
+            <div class="filters__loading skeleton"></div>
+          </div>
+          <footer class="filters__footer">
+            <button type="button" class="btn btn--notify btn--sm btn--block" id="clear-filters" style="visibility: hidden">Clear all filters</button>
+            <p class="filters__count" id="filters-count" aria-live="polite">0 filters active</p>
+          </footer>
+        </aside>
+
+        <section class="sessions" aria-labelledby="sessions-count">
+          <div class="sessions__toolbar">
+            <p class="sessions__count" id="sessions-count" aria-live="polite">&nbsp;</p>
+            <div class="sort" id="sort"></div>
+          </div>
+          <div class="sessions__list" id="sessions-list"></div>
+          <nav class="pagination" id="pagination" aria-label="Pages" hidden></nav>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+</body>
+</html>

@@ -169,6 +169,7 @@ p {
 .icon--error { --icon: url("../assets/icons/error.png"); }
 .icon--logout { --icon: url("../assets/icons/logout.png"); }
 .icon--user { --icon: url("../assets/icons/user.png"); }
+.icon--calendar { --icon: url("../assets/icons/calendar.png"); }
 
 
 /* ---------- Buttons (Figma: Universal Components / Buttons) ---------- */

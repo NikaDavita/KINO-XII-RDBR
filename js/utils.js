@@ -25,6 +25,30 @@ export function formatDayMonth(isoDate, month = 'long') {
 
 export const movieUrl = (slug) => `movie.html?slug=${encodeURIComponent(slug)}`;
 
+// Every "click a showtime" goes through here. Booking is a modal on the film page,
+// so the link opens that page with the session in the URL and the modal opens itself.
+export const bookingUrl = (slug, sessionId, date) =>
+  `${movieUrl(slug)}${date ? `&date=${date}` : ''}&session=${encodeURIComponent(sessionId)}`;
+
+/* ---------- Local dates (Georgia time = the browser's time, never UTC) ---------- */
+
+const pad2 = (n) => String(n).padStart(2, '0');
+export const toIsoDate = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+
+// Today plus the following days, for the 7-day pickers on the sessions and film pages.
+export function nextDays(count = 7) {
+  const today = new Date();
+  return Array.from({ length: count }, (_, i) => {
+    const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+    return {
+      iso: toIsoDate(d),
+      weekday: d.toLocaleDateString('en-GB', { weekday: 'short' }),
+      day: d.getDate(),
+      label: d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }),
+    };
+  });
+}
+
 export function initials(name) {
   return String(name ?? '')
     .trim()

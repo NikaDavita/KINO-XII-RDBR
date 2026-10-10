@@ -3,6 +3,7 @@
 
 const BASE_URL = 'https://api.kinoxii.redberryinternship.ge/api';
 const TOKEN_KEY = 'kinoxii.token';
+const FILTER_OPTIONS_KEY = 'kinoxii.filterOptions';
 
 export const tokenStore = {
   get() {
@@ -65,6 +66,8 @@ export async function request(path, { method = 'GET', query, body } = {}) {
   return data;
 }
 
+let filterOptionsPromise = null;
+
 export const api = {
   login: (email, password) =>
     request('/login', { method: 'POST', body: { email, password } }).then((r) => r.data),
@@ -76,7 +79,31 @@ export const api = {
   featured: () => request('/movies/featured').then((r) => r.data),
   nowPlaying: (limit) => request('/movies/now-playing', { query: { limit } }).then((r) => r.data),
   comingSoon: (limit) => request('/movies/coming-soon', { query: { limit } }).then((r) => r.data),
+  // Returns { data: [{ movie, sessions }], meta }; pagination counts films, not sessions.
+  sessions: ({ date, venues, formats, languages, bands, sort, page }) =>
+    request('/sessions', {
+      query: {
+        date, sort, page,
+        'venues[]': venues, 'formats[]': formats, 'languages[]': languages, 'bands[]': bands,
+      },
+    }),
   search: (q) => request('/search', { query: { q } }).then((r) => r.data),
   notify: (slug) =>
     request(`/movies/${encodeURIComponent(slug)}/notify`, { method: 'POST' }).then((r) => r.data),
+
+  // Fetched once per browser session and cached, as the spec asks.
+  filterOptions() {
+    if (!filterOptionsPromise) {
+      let cached = null;
+      try { cached = JSON.parse(sessionStorage.getItem(FILTER_OPTIONS_KEY)); } catch { /* ignore */ }
+      filterOptionsPromise = cached
+        ? Promise.resolve(cached)
+        : request('/filter-options').then((r) => {
+            try { sessionStorage.setItem(FILTER_OPTIONS_KEY, JSON.stringify(r.data)); } catch { /* ignore */ }
+            return r.data;
+          });
+      filterOptionsPromise.catch(() => { filterOptionsPromise = null; });
+    }
+    return filterOptionsPromise;
+  },
 };
