@@ -19,4 +19,5 @@ export const icons = {
 
   search: svg('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'),
   upload: svg('<path d="M12 15V4"/><path d="m7 9 5-5 5 5"/><path d="M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/>'),
+  popcorn: svg('<path d="M6 10h12l-1.6 10.2a1 1 0 0 1-1 .8H8.6a1 1 0 0 1-1-.8z"/><path d="M10 10.5 10.7 21M14 10.5 13.3 21"/><path d="M6.5 10a2.5 2.5 0 0 1 .9-4.6A3 3 0 0 1 12 4a3 3 0 0 1 4.6 1.4 2.5 2.5 0 0 1 .9 4.6"/>'),
 };

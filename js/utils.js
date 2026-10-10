@@ -34,6 +34,14 @@ export function initials(name) {
     .join('');
 }
 
+export function debounce(fn, wait) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), wait);
+  };
+}
+
 // Lets mouse users drag horizontal card rows; a drag does not count as a click.
 // The window listeners are shared and added once, so rows can be re-rendered freely.
 let drag = null; // { track, startX, startScroll, moved }

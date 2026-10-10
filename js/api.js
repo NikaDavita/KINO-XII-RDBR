@@ -76,6 +76,7 @@ export const api = {
   featured: () => request('/movies/featured').then((r) => r.data),
   nowPlaying: (limit) => request('/movies/now-playing', { query: { limit } }).then((r) => r.data),
   comingSoon: (limit) => request('/movies/coming-soon', { query: { limit } }).then((r) => r.data),
+  search: (q) => request('/search', { query: { q } }).then((r) => r.data),
   notify: (slug) =>
     request(`/movies/${encodeURIComponent(slug)}/notify`, { method: 'POST' }).then((r) => r.data),
 };
